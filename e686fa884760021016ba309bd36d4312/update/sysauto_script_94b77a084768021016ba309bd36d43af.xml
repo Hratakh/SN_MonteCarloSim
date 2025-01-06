@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sysauto_script">
+    <sysauto_script action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <business_calendar/>
+        <condition/>
+        <conditional>false</conditional>
+        <entered_time>1970-01-01 00:00:00</entered_time>
+        <max_drift/>
+        <name>Run Monte Carlo Simulations</name>
+        <offset/>
+        <offset_type>0</offset_type>
+        <run_as display_value="Stefan Reichelt">6816f79cc0a8016401c5a33be04be441</run_as>
+        <run_as_tz/>
+        <run_dayofmonth>1</run_dayofmonth>
+        <run_dayofweek>1</run_dayofweek>
+        <run_period/>
+        <run_start>2024-02-19 14:21:38</run_start>
+        <run_time>1969-12-31 23:10:00</run_time>
+        <run_type>daily</run_type>
+        <script><![CDATA[function getRandomDuration(historicalDurations) {
+    let index = Math.floor(Math.random() * historicalDurations.length);
+    return historicalDurations[index];
+}
+
+function monteCarloProjectSimulation(userStories, historicalDurations, iterations) {
+    let totalDurations = [];
+
+    for(let i = 0; i < iterations; i++) {
+        let totalDuration = 0;
+
+        for(let j = 0; j < userStories.length; j++) {
+            let duration = getRandomDuration(historicalDurations);
+            totalDuration += duration;
+        }
+
+        totalDurations.push(totalDuration);
+    }
+
+    return totalDurations;
+}
+
+let userStories = [1, 2, 3, 4, 5]; // Anzahl der User Stories
+let historicalDurations = [3, 4, 5, 6, 7]; // Historische Dauern
+
+console.log(monteCarloProjectSimulation(userStories, historicalDurations, 1000));]]></script>
+        <sys_class_name>sysauto_script</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2024-02-19 14:22:18</sys_created_on>
+        <sys_id>94b77a084768021016ba309bd36d43af</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Run Monte Carlo Simulations</sys_name>
+        <sys_package display_value="Monte Carlo Simulation" source="x_336554_monte_car">e686fa884760021016ba309bd36d4312</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Monte Carlo Simulation">e686fa884760021016ba309bd36d4312</sys_scope>
+        <sys_update_name>sysauto_script_94b77a084768021016ba309bd36d43af</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2024-02-19 14:22:18</sys_updated_on>
+        <time_zone/>
+        <upgrade_safe>false</upgrade_safe>
+    </sysauto_script>
+</record_update>
