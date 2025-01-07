@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="m2m_sp_widget_dependency">
+    <m2m_sp_widget_dependency action="DELETE">
+        <sp_dependency display_value="chart.js">a7a8754347011200ba13a5554ee4905c</sp_dependency>
+        <sp_widget display_value="Monte Carlo Simulation">b1f0154083c312102ea1c596feaad36f</sp_widget>
+        <sys_class_name>m2m_sp_widget_dependency</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-01-07 11:54:48</sys_created_on>
+        <sys_id>6a9fe10483c712102ea1c596feaad3b3</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>chart.js.Monte Carlo Simulation</sys_name>
+        <sys_package display_value="Monte Carlo Simulation" source="x_336554_monte_car">e686fa884760021016ba309bd36d4312</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Monte Carlo Simulation">e686fa884760021016ba309bd36d4312</sys_scope>
+        <sys_update_name>m2m_sp_widget_dependency_6a9fe10483c712102ea1c596feaad3b3</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-01-07 11:54:48</sys_updated_on>
+    </m2m_sp_widget_dependency>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Monte Carlo Simulation">e686fa884760021016ba309bd36d4312</application>
+        <file_path/>
+        <instance_id>6ca842c41bad0698a43dcb7b234bcb6e</instance_id>
+        <instance_name>dev259078</instance_name>
+        <name>m2m_sp_widget_dependency_6a9fe10483c712102ea1c596feaad3b3</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="m2m_sp_widget_dependency"><m2m_sp_widget_dependency action="INSERT_OR_UPDATE"><sp_dependency display_value="chart.js">a7a8754347011200ba13a5554ee4905c</sp_dependency><sp_widget display_value="Monte Carlo Simulation">b1f0154083c312102ea1c596feaad36f</sp_widget><sys_class_name>m2m_sp_widget_dependency</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2025-01-07 11:54:48</sys_created_on><sys_id>6a9fe10483c712102ea1c596feaad3b3</sys_id><sys_mod_count>0</sys_mod_count><sys_name>chart.js.Monte Carlo Simulation</sys_name><sys_package display_value="Monte Carlo Simulation" source="x_336554_monte_car">e686fa884760021016ba309bd36d4312</sys_package><sys_policy/><sys_scope display_value="Monte Carlo Simulation">e686fa884760021016ba309bd36d4312</sys_scope><sys_update_name>m2m_sp_widget_dependency_6a9fe10483c712102ea1c596feaad3b3</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2025-01-07 11:54:48</sys_updated_on></m2m_sp_widget_dependency></record_update>]]></payload>
+        <payload_hash>-290088448</payload_hash>
+        <record_name>chart.js.Monte Carlo Simulation</record_name>
+        <reverted_from/>
+        <source>42dc347383f252102ea1c596feaad35a</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-01-07 11:54:48</sys_created_on>
+        <sys_id>a29fe10483c712102ea1c596feaad3b7</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>194409e12b90000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-01-07 11:54:48</sys_updated_on>
+        <type>Widget Dependency</type>
+        <update_guid>a69fe1046dc71210431e737072b1cbb6</update_guid>
+        <update_guid_history>a69fe1046dc71210431e737072b1cbb6:-290088448</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="chart.js.Monte Carlo Simulation">e4028244834b12102ea1c596feaad336</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-01-07 13:15:14</sys_created_on>
+        <sys_db_object display_value="" name="m2m_sp_widget_dependency">m2m_sp_widget_dependency</sys_db_object>
+        <sys_id>469a9dbd719f4e48a38e0be5b54cc564</sys_id>
+        <sys_metadata>6a9fe10483c712102ea1c596feaad3b3</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>chart.js.Monte Carlo Simulation</sys_name>
+        <sys_package display_value="Monte Carlo Simulation" source="x_336554_monte_car">e686fa884760021016ba309bd36d4312</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="Monte Carlo Simulation">e686fa884760021016ba309bd36d4312</sys_scope>
+        <sys_scope_delete display_value="">21367d6c17ce4fd79de6438188aeb271</sys_scope_delete>
+        <sys_update_name>m2m_sp_widget_dependency_6a9fe10483c712102ea1c596feaad3b3</sys_update_name>
+        <sys_update_version display_value="m2m_sp_widget_dependency_6a9fe10483c712102ea1c596feaad3b3">a29fe10483c712102ea1c596feaad3b7</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-01-07 13:15:14</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

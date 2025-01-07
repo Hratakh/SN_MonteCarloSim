@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="m2m_sp_theme_js_include">
+    <m2m_sp_theme_js_include action="DELETE">
+        <order/>
+        <sp_js_include display_value="/scripts/thirdparty/angular-chart/chart.js">0898754347011200ba13a5554ee49019</sp_js_include>
+        <sp_theme display_value="MCS Theme">7abcf1c8830b12102ea1c596feaad3cd</sp_theme>
+        <sys_class_name>m2m_sp_theme_js_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-01-07 12:52:43</sys_created_on>
+        <sys_id>f2dcb10c830b12102ea1c596feaad38b</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>/scripts/thirdparty/angular-chart/chart.js.MCS Theme</sys_name>
+        <sys_package display_value="Monte Carlo Simulation" source="x_336554_monte_car">e686fa884760021016ba309bd36d4312</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Monte Carlo Simulation">e686fa884760021016ba309bd36d4312</sys_scope>
+        <sys_update_name>m2m_sp_theme_js_include_f2dcb10c830b12102ea1c596feaad38b</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-01-07 12:52:43</sys_updated_on>
+    </m2m_sp_theme_js_include>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Monte Carlo Simulation">e686fa884760021016ba309bd36d4312</application>
+        <file_path/>
+        <instance_id>6ca842c41bad0698a43dcb7b234bcb6e</instance_id>
+        <instance_name>dev259078</instance_name>
+        <name>m2m_sp_theme_js_include_f2dcb10c830b12102ea1c596feaad38b</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="m2m_sp_theme_js_include"><m2m_sp_theme_js_include action="INSERT_OR_UPDATE"><order/><sp_js_include display_value="/scripts/thirdparty/angular-chart/chart.js">0898754347011200ba13a5554ee49019</sp_js_include><sp_theme display_value="MCS Theme">7abcf1c8830b12102ea1c596feaad3cd</sp_theme><sys_class_name>m2m_sp_theme_js_include</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2025-01-07 12:52:43</sys_created_on><sys_id>f2dcb10c830b12102ea1c596feaad38b</sys_id><sys_mod_count>0</sys_mod_count><sys_name>/scripts/thirdparty/angular-chart/chart.js.MCS Theme</sys_name><sys_package display_value="Monte Carlo Simulation" source="x_336554_monte_car">e686fa884760021016ba309bd36d4312</sys_package><sys_policy/><sys_scope display_value="Monte Carlo Simulation">e686fa884760021016ba309bd36d4312</sys_scope><sys_update_name>m2m_sp_theme_js_include_f2dcb10c830b12102ea1c596feaad38b</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2025-01-07 12:52:43</sys_updated_on></m2m_sp_theme_js_include></record_update>]]></payload>
+        <payload_hash>1607673644</payload_hash>
+        <record_name>/scripts/thirdparty/angular-chart/chart.js.MCS Theme</record_name>
+        <reverted_from/>
+        <source>42dc347383f252102ea1c596feaad35a</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-01-07 12:52:43</sys_created_on>
+        <sys_id>f6dcb10c830b12102ea1c596feaad38e</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>19440d316250000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-01-07 12:52:43</sys_updated_on>
+        <type>JS Includes</type>
+        <update_guid>fadcb10c890b12100009e377e9df408d</update_guid>
+        <update_guid_history>fadcb10c890b12100009e377e9df408d:1607673644</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="/scripts/thirdparty/angular-chart/chart.js.MCS Theme">f5c0ce80834b12102ea1c596feaad34d</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-01-07 13:09:50</sys_created_on>
+        <sys_db_object display_value="" name="m2m_sp_theme_js_include">m2m_sp_theme_js_include</sys_db_object>
+        <sys_id>2d23456eaa3f440fb9996165439baee1</sys_id>
+        <sys_metadata>f2dcb10c830b12102ea1c596feaad38b</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>/scripts/thirdparty/angular-chart/chart.js.MCS Theme</sys_name>
+        <sys_package display_value="Monte Carlo Simulation" source="x_336554_monte_car">e686fa884760021016ba309bd36d4312</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="Monte Carlo Simulation">e686fa884760021016ba309bd36d4312</sys_scope>
+        <sys_scope_delete display_value="">21367d6c17ce4fd79de6438188aeb271</sys_scope_delete>
+        <sys_update_name>m2m_sp_theme_js_include_f2dcb10c830b12102ea1c596feaad38b</sys_update_name>
+        <sys_update_version display_value="m2m_sp_theme_js_include_f2dcb10c830b12102ea1c596feaad38b">f6dcb10c830b12102ea1c596feaad38e</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-01-07 13:09:50</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

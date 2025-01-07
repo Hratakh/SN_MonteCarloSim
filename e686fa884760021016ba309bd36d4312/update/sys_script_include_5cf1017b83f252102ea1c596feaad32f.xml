@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_336554_monte_car.MonteCarloSimUtil</api_name>
+        <caller_access/>
+        <client_callable>false</client_callable>
+        <description/>
+        <mobile_callable>false</mobile_callable>
+        <name>MonteCarloSimUtil</name>
+        <sandbox_callable>false</sandbox_callable>
+        <script><![CDATA[var MonteCarloSimUtil = Class.create();
+MonteCarloSimUtil.prototype = {
+    initialize: function() {},
+
+runSimulation: function(storyCount, iterations) {
+    var results = [];
+    var storyDurations = new MCStoryUtil().getHistoricalStoryDurations(); // Hole die historischen Daten
+
+    for (var i = 0; i < iterations; i++) {
+        var totalDuration = 0;
+
+        for (var j = 0; j < storyCount; j++) {
+            // Wähle eine zufällige Dauer aus den historischen Daten
+            var randomDuration = storyDurations[Math.floor(Math.random() * storyDurations.length)];
+            totalDuration += randomDuration;
+        }
+
+        results.push(totalDuration);
+    }
+
+    return results;
+},
+
+    prepareHistogramData: function(simulationResults) {
+        var histogram = {};
+        for (var i = 0; i < simulationResults.length; i++) {
+            var duration = simulationResults[i];
+            if (!histogram[duration]) {
+                histogram[duration] = 0;
+            }
+            histogram[duration]++;
+        }
+        return histogram;
+    },
+
+    getRandomElement: function(array) {
+        return array[Math.floor(Math.random() * array.length)];
+    },
+
+	simulateThroughput: function(days, iterations, dailyThroughput) {
+        var simulationResults = [];
+
+        for (var i = 0; i < iterations; i++) {
+            var totalThroughput = 0;
+
+            for (var j = 0; j < days; j++) {
+                // Ziehe einen zufälligen Durchsatz aus den historischen Daten
+                var randomThroughput = dailyThroughput[Math.floor(Math.random() * dailyThroughput.length)];
+                totalThroughput += randomThroughput;
+            }
+
+            simulationResults.push(totalThroughput);
+        }
+
+        return simulationResults;
+    },
+
+    type: 'MonteCarloSimUtil'
+};]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-01-06 13:59:18</sys_created_on>
+        <sys_id>5cf1017b83f252102ea1c596feaad32f</sys_id>
+        <sys_mod_count>4</sys_mod_count>
+        <sys_name>MonteCarloSimUtil</sys_name>
+        <sys_package display_value="Monte Carlo Simulation" source="x_336554_monte_car">e686fa884760021016ba309bd36d4312</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_scope display_value="Monte Carlo Simulation">e686fa884760021016ba309bd36d4312</sys_scope>
+        <sys_update_name>sys_script_include_5cf1017b83f252102ea1c596feaad32f</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-01-07 15:56:02</sys_updated_on>
+    </sys_script_include>
+    <sys_es_latest_script action="INSERT_OR_UPDATE">
+        <id>5cf1017b83f252102ea1c596feaad32f</id>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-01-06 13:59:17</sys_created_on>
+        <sys_id>a082c9f383f252102ea1c596feaad357</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-01-06 13:59:17</sys_updated_on>
+        <table>sys_script_include</table>
+        <use_es_latest>true</use_es_latest>
+    </sys_es_latest_script>
+</record_update>

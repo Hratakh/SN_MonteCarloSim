@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_js_include">
+    <sp_js_include action="INSERT_OR_UPDATE">
+        <display_name>https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation</display_name>
+        <source>url</source>
+        <sys_class_name>sp_js_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-01-07 14:01:16</sys_created_on>
+        <sys_id>757c02c4838b12102ea1c596feaad3a3</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation</sys_name>
+        <sys_package display_value="Monte Carlo Simulation" source="x_336554_monte_car">e686fa884760021016ba309bd36d4312</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Monte Carlo Simulation">e686fa884760021016ba309bd36d4312</sys_scope>
+        <sys_ui_script/>
+        <sys_update_name>sp_js_include_757c02c4838b12102ea1c596feaad3a3</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-01-07 14:01:16</sys_updated_on>
+        <url>https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation</url>
+    </sp_js_include>
+</record_update>

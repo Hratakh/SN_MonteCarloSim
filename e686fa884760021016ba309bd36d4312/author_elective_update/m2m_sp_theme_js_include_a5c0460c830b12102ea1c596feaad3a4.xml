@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="m2m_sp_theme_js_include">
+    <m2m_sp_theme_js_include action="DELETE">
+        <order/>
+        <sp_js_include display_value="/scripts/glide-highcharts-v5.js">13d098915be032003d1c484c11f91a7f</sp_js_include>
+        <sp_theme display_value="MCS Theme">7abcf1c8830b12102ea1c596feaad3cd</sp_theme>
+        <sys_class_name>m2m_sp_theme_js_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-01-07 13:09:49</sys_created_on>
+        <sys_id>a5c0460c830b12102ea1c596feaad3a4</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>/scripts/glide-highcharts-v5.js.MCS Theme</sys_name>
+        <sys_package display_value="Monte Carlo Simulation" source="x_336554_monte_car">e686fa884760021016ba309bd36d4312</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Monte Carlo Simulation">e686fa884760021016ba309bd36d4312</sys_scope>
+        <sys_update_name>m2m_sp_theme_js_include_a5c0460c830b12102ea1c596feaad3a4</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-01-07 13:09:49</sys_updated_on>
+    </m2m_sp_theme_js_include>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Monte Carlo Simulation">e686fa884760021016ba309bd36d4312</application>
+        <file_path/>
+        <instance_id>6ca842c41bad0698a43dcb7b234bcb6e</instance_id>
+        <instance_name>dev259078</instance_name>
+        <name>m2m_sp_theme_js_include_a5c0460c830b12102ea1c596feaad3a4</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="m2m_sp_theme_js_include"><m2m_sp_theme_js_include action="INSERT_OR_UPDATE"><order/><sp_js_include display_value="/scripts/glide-highcharts-v5.js">13d098915be032003d1c484c11f91a7f</sp_js_include><sp_theme display_value="MCS Theme">7abcf1c8830b12102ea1c596feaad3cd</sp_theme><sys_class_name>m2m_sp_theme_js_include</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2025-01-07 13:09:49</sys_created_on><sys_id>a5c0460c830b12102ea1c596feaad3a4</sys_id><sys_mod_count>0</sys_mod_count><sys_name>/scripts/glide-highcharts-v5.js.MCS Theme</sys_name><sys_package display_value="Monte Carlo Simulation" source="x_336554_monte_car">e686fa884760021016ba309bd36d4312</sys_package><sys_policy/><sys_scope display_value="Monte Carlo Simulation">e686fa884760021016ba309bd36d4312</sys_scope><sys_update_name>m2m_sp_theme_js_include_a5c0460c830b12102ea1c596feaad3a4</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2025-01-07 13:09:49</sys_updated_on></m2m_sp_theme_js_include></record_update>]]></payload>
+        <payload_hash>-1609912857</payload_hash>
+        <record_name>/scripts/glide-highcharts-v5.js.MCS Theme</record_name>
+        <reverted_from/>
+        <source>42dc347383f252102ea1c596feaad35a</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-01-07 13:09:49</sys_created_on>
+        <sys_id>a1c0ce80834b12102ea1c596feaad346</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>19440e2c0ca0000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-01-07 13:09:49</sys_updated_on>
+        <type>JS Includes</type>
+        <update_guid>a5c0ce80f24b1210c8359b23668fb745</update_guid>
+        <update_guid_history>a5c0ce80f24b1210c8359b23668fb745:-1609912857</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="/scripts/glide-highcharts-v5.js.MCS Theme">9b314280834b12102ea1c596feaad3fa</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-01-07 13:11:51</sys_created_on>
+        <sys_db_object display_value="" name="m2m_sp_theme_js_include">m2m_sp_theme_js_include</sys_db_object>
+        <sys_id>3d477f5f574a40fd99f1cc1ea816bac9</sys_id>
+        <sys_metadata>a5c0460c830b12102ea1c596feaad3a4</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>/scripts/glide-highcharts-v5.js.MCS Theme</sys_name>
+        <sys_package display_value="Monte Carlo Simulation" source="x_336554_monte_car">e686fa884760021016ba309bd36d4312</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="Monte Carlo Simulation">e686fa884760021016ba309bd36d4312</sys_scope>
+        <sys_scope_delete display_value="">21367d6c17ce4fd79de6438188aeb271</sys_scope_delete>
+        <sys_update_name>m2m_sp_theme_js_include_a5c0460c830b12102ea1c596feaad3a4</sys_update_name>
+        <sys_update_version display_value="m2m_sp_theme_js_include_a5c0460c830b12102ea1c596feaad3a4">a1c0ce80834b12102ea1c596feaad346</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-01-07 13:11:51</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

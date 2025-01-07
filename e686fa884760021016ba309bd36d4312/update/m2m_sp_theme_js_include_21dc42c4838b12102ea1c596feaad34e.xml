@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="m2m_sp_theme_js_include">
+    <m2m_sp_theme_js_include action="INSERT_OR_UPDATE">
+        <order>300</order>
+        <sp_js_include display_value="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation">086c0ac4838b12102ea1c596feaad3d2</sp_js_include>
+        <sp_theme display_value="MCS Theme">7abcf1c8830b12102ea1c596feaad3cd</sp_theme>
+        <sys_class_name>m2m_sp_theme_js_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-01-07 14:02:32</sys_created_on>
+        <sys_id>21dc42c4838b12102ea1c596feaad34e</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation.MCS Theme</sys_name>
+        <sys_package display_value="Monte Carlo Simulation" source="x_336554_monte_car">e686fa884760021016ba309bd36d4312</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Monte Carlo Simulation">e686fa884760021016ba309bd36d4312</sys_scope>
+        <sys_update_name>m2m_sp_theme_js_include_21dc42c4838b12102ea1c596feaad34e</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-01-07 14:55:09</sys_updated_on>
+    </m2m_sp_theme_js_include>
+</record_update>

@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[api.controller = function ($scope) {
+    var canvas = document.getElementById('simulationChart');
+    if (!canvas) {
+        console.error("Canvas-Element nicht gefunden!");
+        return;
+    }
+
+    var histogramData = $scope.data.histogramData || [];
+    var confidenceThroughput = $scope.data.confidenceThroughput || null;
+
+    if (histogramData.length === 0 || confidenceThroughput === null) {
+        console.error("Keine Histogrammdaten oder kein Konfidenzwert verfügbar.");
+        return;
+    }
+
+    // Extrahiere die Daten für das Bar-Diagramm
+    var labels = histogramData.map(function (item) {
+        return item.throughput; // Numerische Werte für die X-Achse
+    });
+
+    var frequencies = histogramData.map(function (item) {
+        return item.frequency; // Häufigkeiten für die Y-Achse
+    });
+
+    new Chart(canvas.getContext('2d'), {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Simulated number of completed Stories in 14 days',
+                data: frequencies,
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            plugins: {
+                annotation: {
+                    annotations: {
+                        confidenceLine: {
+                            type: 'line',
+                            xMin: confidenceThroughput,
+                            xMax: confidenceThroughput,
+                            borderColor: 'red',
+                            borderWidth: 2,
+                            label: {
+                                content: `85% (${confidenceThroughput} Stories)`,
+                                enabled: true,
+                                position: 'end',
+                                backgroundColor: 'rgba(255, 99, 132, 0.8)',
+                                color: 'white',
+                                font: {
+                                    size: 12,
+                                    weight: 'bold'
+                                },
+                                padding: 6
+                            }
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    type: 'linear', // Numerische X-Achse
+                    title: {
+                        display: true,
+                        text: 'Number of completed Stories'
+                    },
+                    ticks: {
+                        stepSize: 10 // Optional: Schrittweite der Labels
+                    }
+                },
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Frequency of occurrence'
+                    }
+                }
+            }
+        }
+    });
+};
+]]></client_script>
+        <controller_as>c</controller_as>
+        <css/>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>true</has_preview>
+        <id>monte_carlo_simulation</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {  }]]></link>
+        <name>Monte Carlo Simulation</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function () {
+    data.histogramData = [];
+    var storyDataUtil = new MCStoryUtil();
+    var monteCarloSim = new MonteCarloSimUtil();
+
+    // Hole den täglichen Durchsatz aus den historischen Daten
+    var dailyThroughput = storyDataUtil.getDailyThroughput();
+
+    if (dailyThroughput.length > 0) {
+        var simulationParams = {
+            days: 14,         // Zeitraum der Simulation (z. B. 14 Tage)
+            iterations: 10000 // Anzahl der Simulationen
+        };
+
+        // Führe die Monte-Carlo-Simulation durch
+        var simulationResults = monteCarloSim.simulateThroughput(
+            simulationParams.days,
+            simulationParams.iterations,
+            dailyThroughput
+        );
+
+        // Histogramm erstellen
+        var histogram = simulationResults.reduce(function (acc, throughput) {
+            acc[throughput] = (acc[throughput] || 0) + 1;
+            return acc;
+        }, {});
+
+        // Konvertiere das Histogramm für das Client Script
+        data.histogramData = Object.keys(histogram).map(function (key) {
+            return {
+                throughput: parseInt(key, 10),
+                frequency: histogram[key]
+            };
+        });
+
+        // Sortiere die Histogrammdaten nach Throughput
+        data.histogramData.sort(function (a, b) {
+            return a.throughput - b.throughput;
+        });
+
+        // Berechne die Dauer für 85% Konfidenz
+        var totalFrequency = simulationResults.length;
+        var cumulativeFrequency = 0;
+        data.confidenceThroughput = null;
+
+        for (var i = 0; i < data.histogramData.length; i++) {
+            cumulativeFrequency += data.histogramData[i].frequency;
+            if (!data.confidenceThroughput && (cumulativeFrequency / totalFrequency) >= 0.85) {
+                data.confidenceThroughput = data.histogramData[i].throughput;
+                break;
+            }
+        }
+    } else {
+        gs.info("Keine historischen Daten für die Monte-Carlo-Simulation verfügbar.");
+    }
+})();
+]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-01-07 09:40:56</sys_created_on>
+        <sys_id>b1f0154083c312102ea1c596feaad36f</sys_id>
+        <sys_mod_count>52</sys_mod_count>
+        <sys_name>Monte Carlo Simulation</sys_name>
+        <sys_package display_value="Monte Carlo Simulation" source="x_336554_monte_car">e686fa884760021016ba309bd36d4312</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Monte Carlo Simulation">e686fa884760021016ba309bd36d4312</sys_scope>
+        <sys_update_name>sp_widget_b1f0154083c312102ea1c596feaad36f</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-01-07 16:14:01</sys_updated_on>
+        <template><![CDATA[<div class="widget-body">
+    <canvas id="simulationChart" width="600" height="400"></canvas>
+</div>
+]]></template>
+    </sp_widget>
+</record_update>

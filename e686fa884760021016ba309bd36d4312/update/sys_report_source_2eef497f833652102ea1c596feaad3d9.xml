@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_report_source">
+    <sys_report_source action="INSERT_OR_UPDATE">
+        <description/>
+        <display>Scripted MCS Histogram Data (Story)</display>
+        <filter table="rm_story">sys_id=javascript: new MonteCarloDataProvider().getHistogramData();<item endquery="false" field="sys_id" goto="false" newquery="false" operator="=" or="false" value="javascript: new MonteCarloDataProvider().getHistogramData();"/>
+        </filter>
+        <name>Scripted MCS Histogram Data</name>
+        <sys_class_name>sys_report_source</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-01-06 15:10:25</sys_created_on>
+        <sys_id>2eef497f833652102ea1c596feaad3d9</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Scripted MCS Histogram Data (Story)</sys_name>
+        <sys_package display_value="Monte Carlo Simulation" source="x_336554_monte_car">e686fa884760021016ba309bd36d4312</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Monte Carlo Simulation">e686fa884760021016ba309bd36d4312</sys_scope>
+        <sys_update_name>sys_report_source_2eef497f833652102ea1c596feaad3d9</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-01-06 15:10:25</sys_updated_on>
+        <table>rm_story</table>
+    </sys_report_source>
+</record_update>
