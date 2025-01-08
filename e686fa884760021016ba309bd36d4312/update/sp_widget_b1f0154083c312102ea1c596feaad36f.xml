@@ -3,85 +3,187 @@
         <category>custom</category>
         <client_script><![CDATA[api.controller = function ($scope) {
     var canvas = document.getElementById('simulationChart');
-    if (!canvas) {
-        console.error("Canvas-Element nicht gefunden!");
+    var confidenceInput = document.getElementById('confidenceInput');
+    var confidenceDisplay = document.getElementById('confidenceDisplay');
+    var daysInput = document.getElementById('daysInput');
+    var iterationsInput = document.getElementById('iterationsInput');
+    var reloadButton = document.getElementById('reloadButton');
+
+    if (!canvas || !confidenceInput || !confidenceDisplay || !daysInput || !iterationsInput || !reloadButton) {
+        console.error("Elements not found!");
         return;
     }
 
+    // Default parameters
+    $scope.confidenceValue = 85;
+    $scope.simulationDays = 14;
+    $scope.simulationIterations = 10000;
     var histogramData = $scope.data.histogramData || [];
-    var confidenceThroughput = $scope.data.confidenceThroughput || null;
 
-    if (histogramData.length === 0 || confidenceThroughput === null) {
-        console.error("Keine Histogrammdaten oder kein Konfidenzwert verfügbar.");
+    if (histogramData.length === 0) {
+        console.error("No histogram data available.");
         return;
     }
 
-    // Extrahiere die Daten für das Bar-Diagramm
-    var labels = histogramData.map(function (item) {
-        return item.throughput; // Numerische Werte für die X-Achse
-    });
+    var chartInstance = null; // Stores the current Chart.js instance
 
-    var frequencies = histogramData.map(function (item) {
-        return item.frequency; // Häufigkeiten für die Y-Achse
-    });
+    // Function to reload the chart
+    function reloadChart(confidenceValue, histogramData) {
+        // Sort the histogram data
+        histogramData.sort(function (a, b) {
+            return a.throughput - b.throughput;
+        });
 
-    new Chart(canvas.getContext('2d'), {
-        type: 'bar',
-        data: {
-            labels: labels,
-            datasets: [{
-                label: 'Simulated number of completed Stories in 14 days',
-                data: frequencies,
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                borderColor: 'rgba(75, 192, 192, 1)',
-                borderWidth: 1
-            }]
-        },
-        options: {
-            plugins: {
-                annotation: {
-                    annotations: {
-                        confidenceLine: {
-                            type: 'line',
-                            xMin: confidenceThroughput,
-                            xMax: confidenceThroughput,
-                            borderColor: 'red',
-                            borderWidth: 2,
-                            label: {
-                                content: `85% (${confidenceThroughput} Stories)`,
-                                enabled: true,
-                                position: 'end',
-                                backgroundColor: 'rgba(255, 99, 132, 0.8)',
-                                color: 'white',
-                                font: {
-                                    size: 12,
-                                    weight: 'bold'
-                                },
-                                padding: 6
+        //console.log("Sorted histogram data:", histogramData);
+
+        // Calculate total frequency
+        var totalFrequency = histogramData.reduce(function (sum, item) {
+            return sum + item.frequency;
+        }, 0);
+        //console.log("Total frequency:", totalFrequency);
+
+        // Calculate cumulative throughput
+        var cumulativeFrequency = 0;
+        var confidenceThroughput = null;
+
+        for (var i = 0; i < histogramData.length; i++) {
+            cumulativeFrequency += histogramData[i].frequency;
+            /*console.log(
+                "Cumulative frequency after throughput",
+                histogramData[i].throughput,
+                ":",
+                cumulativeFrequency
+            );*/
+
+            if (!confidenceThroughput && (cumulativeFrequency / totalFrequency) >= (confidenceValue / 100)) {
+                confidenceThroughput = histogramData[i].throughput;
+                break;
+            }
+        }
+
+        console.log("New confidence throughput:", confidenceThroughput);
+
+        // Fallback if confidence throughput is null
+        if (confidenceThroughput === null) {
+            confidenceThroughput = 0;
+        }
+
+        // Update the confidence display
+        confidenceDisplay.textContent = confidenceValue + "% (" + confidenceThroughput + " stories)";
+
+        // Destroy the existing chart if any
+        if (chartInstance) {
+            chartInstance.destroy();
+        }
+
+        // Create a new chart
+        chartInstance = new Chart(canvas.getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: histogramData.map(function (item) {
+                    return item.throughput;
+                }),
+                datasets: [{
+                    label: 'Simulated number of completed stories',
+                    data: histogramData.map(function (item) {
+                        return item.frequency;
+                    }),
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                plugins: {
+                    annotation: {
+                        annotations: {
+                            confidenceLine: {
+                                type: 'line',
+                                xMin: confidenceThroughput,
+                                xMax: confidenceThroughput,
+                                borderColor: 'red',
+                                borderWidth: 2,
+                                label: {
+                                    content: confidenceValue + "% (" + confidenceThroughput + " stories)",
+                                    enabled: true,
+                                    position: 'end',
+                                    backgroundColor: 'rgba(255, 99, 132, 0.8)',
+                                    color: 'white',
+                                    font: {
+                                        size: 12,
+                                        weight: 'bold'
+                                    },
+                                    padding: 6
+                                }
                             }
                         }
                     }
-                }
-            },
-            scales: {
-                x: {
-                    type: 'linear', // Numerische X-Achse
-                    title: {
-                        display: true,
-                        text: 'Number of completed Stories'
-                    },
-                    ticks: {
-                        stepSize: 10 // Optional: Schrittweite der Labels
-                    }
                 },
-                y: {
-                    beginAtZero: true,
-                    title: {
-                        display: true,
-                        text: 'Frequency of occurrence'
+                scales: {
+                    x: {
+                        type: 'linear',
+                        title: {
+                            display: true,
+                            text: 'Number of completed stories'
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Occurrences'
+                        }
                     }
                 }
             }
+        });
+    }
+
+    // Event Listener for simulation parameters
+    reloadButton.addEventListener('click', function () {
+        var days = parseInt(daysInput.value, 10);
+        var iterations = parseInt(iterationsInput.value, 10);
+
+        if (isNaN(days) || days <= 0) {
+            alert("Please enter a valid number of days.");
+            return;
+        }
+        if (isNaN(iterations) || iterations <= 0) {
+            alert("Please enter a valid number of iterations.");
+            return;
+        }
+
+        // Update simulation parameters
+        $scope.simulationDays = days;
+        $scope.simulationIterations = iterations;
+
+        // Call the server to recalculate the simulation data
+        $scope.server.get({
+            days: $scope.simulationDays,
+            iterations: $scope.simulationIterations
+        }).then(function (response) {
+            //console.log("Server response (after Run Simulation):", response);
+
+            // Update histogram data
+            histogramData = response.data.histogramData || [];
+            if (histogramData.length === 0) {
+                console.error("Received empty histogram data!");
+            } 
+            reloadChart($scope.confidenceValue, histogramData);
+        });
+    });
+
+    // Initial chart load
+    reloadChart($scope.confidenceValue, histogramData);
+
+    // Event Listener for confidence input
+    confidenceInput.addEventListener('input', function () {
+        var value = parseInt(confidenceInput.value, 10);
+        if (value >= 1 && value <= 100) {
+            $scope.confidenceValue = value;
+            reloadChart($scope.confidenceValue, histogramData);
+        } else {
+            confidenceDisplay.textContent = "Please enter a value between 1 and 100.";
         }
     });
 };
@@ -102,25 +204,21 @@
         <public>false</public>
         <roles/>
         <script><![CDATA[(function () {
+    // Eingabeparameter für die Simulation (Standardwerte verwenden, falls keine Eingabe vorhanden ist)
+  //gs.info("Eingabewerte (input): " + JSON.stringify(input));  
+	var days = input && input.days ? parseInt(input.days, 10) : 14; // Standard: 14 Tage
+    var iterations = input && input.iterations ? parseInt(input.iterations, 10) : 10000; // Standard: 10.000 Iterationen
+
     data.histogramData = [];
     var storyDataUtil = new MCStoryUtil();
     var monteCarloSim = new MonteCarloSimUtil();
 
-    // Hole den täglichen Durchsatz aus den historischen Daten
+    // Täglichen Durchsatz aus den historischen Daten abrufen
     var dailyThroughput = storyDataUtil.getDailyThroughput();
 
     if (dailyThroughput.length > 0) {
-        var simulationParams = {
-            days: 14,         // Zeitraum der Simulation (z. B. 14 Tage)
-            iterations: 10000 // Anzahl der Simulationen
-        };
-
-        // Führe die Monte-Carlo-Simulation durch
-        var simulationResults = monteCarloSim.simulateThroughput(
-            simulationParams.days,
-            simulationParams.iterations,
-            dailyThroughput
-        );
+        // Monte-Carlo-Simulation durchführen
+        var simulationResults = monteCarloSim.simulateThroughput(days, iterations, dailyThroughput);
 
         // Histogramm erstellen
         var histogram = simulationResults.reduce(function (acc, throughput) {
@@ -128,7 +226,7 @@
             return acc;
         }, {});
 
-        // Konvertiere das Histogramm für das Client Script
+        // Histogrammdaten in ein Array umwandeln
         data.histogramData = Object.keys(histogram).map(function (key) {
             return {
                 throughput: parseInt(key, 10),
@@ -136,25 +234,35 @@
             };
         });
 
-        // Sortiere die Histogrammdaten nach Throughput
+        // Histogrammdaten sortieren
         data.histogramData.sort(function (a, b) {
             return a.throughput - b.throughput;
         });
+			
 
-        // Berechne die Dauer für 85% Konfidenz
+        // Konfidenzdurchsatz berechnen (85% Standard oder dynamisch durch Client)
+        var confidenceLevel = input && input.confidence ? parseFloat(input.confidence) : 85; // Standard: 85%
         var totalFrequency = simulationResults.length;
         var cumulativeFrequency = 0;
         data.confidenceThroughput = null;
 
         for (var i = 0; i < data.histogramData.length; i++) {
             cumulativeFrequency += data.histogramData[i].frequency;
-            if (!data.confidenceThroughput && (cumulativeFrequency / totalFrequency) >= 0.85) {
+            if (!data.confidenceThroughput && (cumulativeFrequency / totalFrequency) >= (confidenceLevel / 100)) {
                 data.confidenceThroughput = data.histogramData[i].throughput;
                 break;
             }
         }
+
+        // Debugging-Informationen (optional)
+        /*
+				gs.info("Simulation erfolgreich abgeschlossen.");
+        gs.info("Eingabewerte - Tage: " + days + ", Iterationen: " + iterations + ", Konfidenz: " + confidenceLevel + "%");
+        gs.info("Konfidenzdurchsatz (85%): " + data.confidenceThroughput);
+				gs.info("Histogrammdaten: " + JSON.stringify(data.histogramData));
+				*/
     } else {
-        gs.info("Keine historischen Daten für die Monte-Carlo-Simulation verfügbar.");
+        gs.info("Keine historischen Daten für die Simulation verfügbar.");
     }
 })();
 ]]></script>
@@ -163,16 +271,27 @@
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2025-01-07 09:40:56</sys_created_on>
         <sys_id>b1f0154083c312102ea1c596feaad36f</sys_id>
-        <sys_mod_count>52</sys_mod_count>
+        <sys_mod_count>65</sys_mod_count>
         <sys_name>Monte Carlo Simulation</sys_name>
         <sys_package display_value="Monte Carlo Simulation" source="x_336554_monte_car">e686fa884760021016ba309bd36d4312</sys_package>
         <sys_policy/>
         <sys_scope display_value="Monte Carlo Simulation">e686fa884760021016ba309bd36d4312</sys_scope>
         <sys_update_name>sp_widget_b1f0154083c312102ea1c596feaad36f</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2025-01-07 16:14:01</sys_updated_on>
-        <template><![CDATA[<div class="widget-body">
-    <canvas id="simulationChart" width="600" height="400"></canvas>
+        <sys_updated_on>2025-01-08 11:28:10</sys_updated_on>
+        <template><![CDATA[<h1>
+  Monte Carlo Simulation: Histogram
+</h1>
+<div class="widget-body">
+    <label for="confidenceInput">Confidence level (%):</label>
+    <input id="confidenceInput" type="number" min="1" max="100" value="85" style="margin-left: 10px; width: 60px;" />
+    <p id="confidenceDisplay">85% (0 stories)</p>
+    <label for="daysInput">Days:</label>
+    <input id="daysInput" type="number" min="1" value="14" style="margin-left: 10px; width: 60px;" />
+    <label for="iterationsInput">Iterations:</label>
+    <input id="iterationsInput" type="number" min="1" value="10000" style="margin-left: 10px; width: 80px;" />
+    <button id="reloadButton" style="margin-left: 10px;">Run Simulation</button>
+    <canvas id="simulationChart" width="300" height="200"></canvas>
 </div>
 ]]></template>
     </sp_widget>

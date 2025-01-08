@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>public</access>
+        <active>true</active>
+        <api_name>x_336554_monte_car.CalculateProbabilityAjax</api_name>
+        <caller_access/>
+        <client_callable>true</client_callable>
+        <description/>
+        <mobile_callable>false</mobile_callable>
+        <name>CalculateProbabilityAjax</name>
+        <sandbox_callable>false</sandbox_callable>
+        <script><![CDATA[var CalculateProbabilityAjax = Class.create();
+CalculateProbabilityAjax.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
+    calculateProbability: function () {
+        // Hole den aktuellen Sprint
+        var sprintId = this.getParameter('sysparm_sprint_id');
+        if (!sprintId) {
+            return "Invalid Sprint ID.";
+        }
+
+        // Hole die verbleibenden Tage
+        var sprintGR = new GlideRecordSecure('rm_sprint'); // GlideRecordSecure statt GlideRecord
+        if (!sprintGR.get(sprintId)) {
+            return "Sprint not found.";
+        }
+
+        var sprintEndDate = new GlideDateTime(sprintGR.end_date);
+        var today = new GlideDateTime();
+        var remainingDays = Math.ceil((sprintEndDate.getNumericValue() - today.getNumericValue()) / (1000 * 60 * 60 * 24));
+
+        if (remainingDays <= 0) {
+            return "The sprint has already ended or ends today. Probability calculation is not applicable.";
+        }
+
+        // Zähle die offenen Stories im Sprint
+        var openStoriesAgg = new GlideAggregate('rm_story');
+        openStoriesAgg.addQuery('sprint', sprintId);
+        openStoriesAgg.addQuery('state', '!=', '3'); // Status "nicht abgeschlossen"
+        openStoriesAgg.addAggregate('COUNT');
+        openStoriesAgg.query();
+
+        var openStories = 0;
+        if (openStoriesAgg.next()) {
+            openStories = openStoriesAgg.getAggregate('COUNT');
+        }
+
+        if (openStories === 0) {
+            return "No open stories found in this sprint. Probability calculation is not necessary.";
+        }
+
+        // Debug: Parameter prüfen
+        gs.info("Remaining Days: " + remainingDays);
+        gs.info("Open Stories: " + openStories);
+
+        // Initialisiere Script Includes
+        var storyDataUtil = new MCStoryUtil();
+        var monteCarloSim = new MonteCarloSimUtil();
+
+        // Hole den täglichen Durchsatz
+        var dailyThroughput = storyDataUtil.getDailyThroughput();
+        gs.info("Daily Throughput: " + JSON.stringify(dailyThroughput));
+
+        if (dailyThroughput.length === 0) {
+            return "No historical data available for probability calculation.";
+        }
+
+        // Monte-Carlo-Simulation durchführen
+        var iterations = 10000;
+        var simulationResults = monteCarloSim.simulateThroughput(remainingDays, iterations, dailyThroughput);
+
+        // Wahrscheinlichkeit berechnen
+        var probability = monteCarloSim.calculateProbability(openStories, simulationResults);
+
+        // Ergebnis zurückgeben
+        var message = "The probability of completing " + openStories + " stories in the remaining " + remainingDays + " days is " + probability.toFixed(2) + "%.";
+        gs.info(message);
+
+        return message;
+    },
+
+    // Die Methode muss clientseitig aufrufbar sein
+    isPublic: function () {
+        return true;
+    }
+});]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-01-08 13:54:43</sys_created_on>
+        <sys_id>45f3131c834f92102ea1c596feaad321</sys_id>
+        <sys_mod_count>8</sys_mod_count>
+        <sys_name>CalculateProbabilityAjax</sys_name>
+        <sys_package display_value="Monte Carlo Simulation" source="x_336554_monte_car">e686fa884760021016ba309bd36d4312</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Monte Carlo Simulation">e686fa884760021016ba309bd36d4312</sys_scope>
+        <sys_update_name>sys_script_include_45f3131c834f92102ea1c596feaad321</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-01-08 14:49:54</sys_updated_on>
+    </sys_script_include>
+    <sys_es_latest_script action="INSERT_OR_UPDATE">
+        <id>45f3131c834f92102ea1c596feaad321</id>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-01-08 13:54:43</sys_created_on>
+        <sys_id>30a49f98834f92102ea1c596feaad394</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-01-08 13:54:43</sys_updated_on>
+        <table>sys_script_include</table>
+        <use_es_latest>true</use_es_latest>
+    </sys_es_latest_script>
+</record_update>
