@@ -28,116 +28,98 @@
     var chartInstance = null; // Stores the current Chart.js instance
 
     // Function to reload the chart
-    function reloadChart(confidenceValue, histogramData) {
-        // Sort the histogram data
-        histogramData.sort(function (a, b) {
-            return a.throughput - b.throughput;
-        });
+    function reloadChart(confidenceLevel, histogramData) {
+    // Sortiere die Histogrammdaten nach der Anzahl der Stories
+    histogramData.sort(function (a, b) {
+        return a.throughput - b.throughput;
+    });
 
-        //console.log("Sorted histogram data:", histogramData);
+    // Berechne das Perzentil (von rechts nach links)
+    var totalFrequency = histogramData.reduce(function (sum, item) {
+        return sum + item.frequency;
+    }, 0);
 
-        // Calculate total frequency
-        var totalFrequency = histogramData.reduce(function (sum, item) {
-            return sum + item.frequency;
-        }, 0);
-        //console.log("Total frequency:", totalFrequency);
+    var cumulativeFrequency = 0;
+    var percentileStories = null;
 
-        // Calculate cumulative throughput
-        var cumulativeFrequency = 0;
-        var confidenceThroughput = null;
+    for (var i = histogramData.length - 1; i >= 0; i--) { // Von rechts nach links iterieren
+        cumulativeFrequency += histogramData[i].frequency;
 
-        for (var i = 0; i < histogramData.length; i++) {
-            cumulativeFrequency += histogramData[i].frequency;
-            /*console.log(
-                "Cumulative frequency after throughput",
-                histogramData[i].throughput,
-                ":",
-                cumulativeFrequency
-            );*/
-
-            if (!confidenceThroughput && (cumulativeFrequency / totalFrequency) >= (confidenceValue / 100)) {
-                confidenceThroughput = histogramData[i].throughput;
-                break;
-            }
+        if ((cumulativeFrequency / totalFrequency) >= (confidenceLevel / 100)) {
+            percentileStories = histogramData[i].throughput;
+            break;
         }
+    }
+			
+    // Update the confidence display
+    confidenceDisplay.textContent = confidenceLevel + "% (" + percentileStories + " stories)";
+			
+    // Zeichne das Diagramm
+    if (chartInstance) {
+        chartInstance.destroy();
+    }
 
-        console.log("New confidence throughput:", confidenceThroughput);
-
-        // Fallback if confidence throughput is null
-        if (confidenceThroughput === null) {
-            confidenceThroughput = 0;
-        }
-
-        // Update the confidence display
-        confidenceDisplay.textContent = confidenceValue + "% (" + confidenceThroughput + " stories)";
-
-        // Destroy the existing chart if any
-        if (chartInstance) {
-            chartInstance.destroy();
-        }
-
-        // Create a new chart
-        chartInstance = new Chart(canvas.getContext('2d'), {
-            type: 'bar',
-            data: {
-                labels: histogramData.map(function (item) {
-                    return item.throughput;
+    chartInstance = new Chart(canvas.getContext('2d'), {
+        type: 'bar',
+        data: {
+            labels: histogramData.map(function (item) {
+                return item.throughput;
+            }),
+            datasets: [{
+                label: 'Number of Stories',
+                data: histogramData.map(function (item) {
+                    return item.frequency;
                 }),
-                datasets: [{
-                    label: 'Simulated number of completed stories',
-                    data: histogramData.map(function (item) {
-                        return item.frequency;
-                    }),
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                plugins: {
-                    annotation: {
-                        annotations: {
-                            confidenceLine: {
-                                type: 'line',
-                                xMin: confidenceThroughput,
-                                xMax: confidenceThroughput,
-                                borderColor: 'red',
-                                borderWidth: 2,
-                                label: {
-                                    content: confidenceValue + "% (" + confidenceThroughput + " stories)",
-                                    enabled: true,
-                                    position: 'end',
-                                    backgroundColor: 'rgba(255, 99, 132, 0.8)',
-                                    color: 'white',
-                                    font: {
-                                        size: 12,
-                                        weight: 'bold'
-                                    },
-                                    padding: 6
-                                }
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            plugins: {
+                annotation: {
+                    annotations: {
+                        confidenceLine: {
+                            type: 'line',
+                            xMin: percentileStories,
+                            xMax: percentileStories,
+                            borderColor: 'red',
+                            borderWidth: 2,
+                            label: {
+                                content: `${confidenceLevel}% Confidence (${percentileStories} Stories)`,
+                                enabled: true,
+                                position: 'end',
+                                backgroundColor: 'rgba(255, 99, 132, 0.8)',
+                                color: 'white',
+                                font: {
+                                    size: 12,
+                                    weight: 'bold'
+                                },
+                                padding: 6
                             }
                         }
                     }
+                }
+            },
+            scales: {
+                x: {
+                    type: 'linear',
+                    title: {
+                        display: true,
+                        text: 'Number of Stories'
+                    }
                 },
-                scales: {
-                    x: {
-                        type: 'linear',
-                        title: {
-                            display: true,
-                            text: 'Number of completed stories'
-                        }
-                    },
-                    y: {
-                        beginAtZero: true,
-                        title: {
-                            display: true,
-                            text: 'Occurrences'
-                        }
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Frequency'
                     }
                 }
             }
-        });
-    }
+        }
+    });
+}
 
     // Event Listener for simulation parameters
     reloadButton.addEventListener('click', function () {
@@ -204,66 +186,55 @@
         <public>false</public>
         <roles/>
         <script><![CDATA[(function () {
-    // Eingabeparameter für die Simulation (Standardwerte verwenden, falls keine Eingabe vorhanden ist)
-  //gs.info("Eingabewerte (input): " + JSON.stringify(input));  
-	var days = input && input.days ? parseInt(input.days, 10) : 14; // Standard: 14 Tage
+    // Eingabewerte aus der Client-Seite
+    var days = input && input.days ? parseInt(input.days, 10) : 14; // Standard: 14 Tage
     var iterations = input && input.iterations ? parseInt(input.iterations, 10) : 10000; // Standard: 10.000 Iterationen
+    var confidenceLevel = input && input.confidence ? parseFloat(input.confidence) : 85; // Standard: 85%
 
-    data.histogramData = [];
+    // Initialisiere Hilfsklassen
     var storyDataUtil = new MCStoryUtil();
     var monteCarloSim = new MonteCarloSimUtil();
 
-    // Täglichen Durchsatz aus den historischen Daten abrufen
+    // Hole den täglichen Durchsatz aus den historischen Daten
     var dailyThroughput = storyDataUtil.getDailyThroughput();
 
-    if (dailyThroughput.length > 0) {
-        // Monte-Carlo-Simulation durchführen
-        var simulationResults = monteCarloSim.simulateThroughput(days, iterations, dailyThroughput);
-
-        // Histogramm erstellen
-        var histogram = simulationResults.reduce(function (acc, throughput) {
-            acc[throughput] = (acc[throughput] || 0) + 1;
-            return acc;
-        }, {});
-
-        // Histogrammdaten in ein Array umwandeln
-        data.histogramData = Object.keys(histogram).map(function (key) {
-            return {
-                throughput: parseInt(key, 10),
-                frequency: histogram[key]
-            };
-        });
-
-        // Histogrammdaten sortieren
-        data.histogramData.sort(function (a, b) {
-            return a.throughput - b.throughput;
-        });
-			
-
-        // Konfidenzdurchsatz berechnen (85% Standard oder dynamisch durch Client)
-        var confidenceLevel = input && input.confidence ? parseFloat(input.confidence) : 85; // Standard: 85%
-        var totalFrequency = simulationResults.length;
-        var cumulativeFrequency = 0;
-        data.confidenceThroughput = null;
-
-        for (var i = 0; i < data.histogramData.length; i++) {
-            cumulativeFrequency += data.histogramData[i].frequency;
-            if (!data.confidenceThroughput && (cumulativeFrequency / totalFrequency) >= (confidenceLevel / 100)) {
-                data.confidenceThroughput = data.histogramData[i].throughput;
-                break;
-            }
-        }
-
-        // Debugging-Informationen (optional)
-        /*
-				gs.info("Simulation erfolgreich abgeschlossen.");
-        gs.info("Eingabewerte - Tage: " + days + ", Iterationen: " + iterations + ", Konfidenz: " + confidenceLevel + "%");
-        gs.info("Konfidenzdurchsatz (85%): " + data.confidenceThroughput);
-				gs.info("Histogrammdaten: " + JSON.stringify(data.histogramData));
-				*/
-    } else {
-        gs.info("Keine historischen Daten für die Simulation verfügbar.");
+    if (dailyThroughput.length === 0) {
+        data.error = "No historical data available.";
+        return;
     }
+
+    // Monte-Carlo-Simulation durchführen
+    var simulationResults = monteCarloSim.simulateThroughput(days, iterations, dailyThroughput);
+
+    // Berechne das Perzentil basierend auf dem Confidence Level
+    var percentileStories = monteCarloSim.calculatePercentile(simulationResults, confidenceLevel);
+
+    // Erstelle das Histogramm
+    var histogram = simulationResults.reduce(function (acc, throughput) {
+        acc[throughput] = (acc[throughput] || 0) + 1;
+        return acc;
+    }, {});
+
+    // Formatieren der Histogrammdaten für den Client
+    data.histogramData = Object.keys(histogram).map(function (key) {
+        return {
+            throughput: parseInt(key, 10),
+            frequency: histogram[key]
+        };
+    });
+
+    // Sortiere die Histogrammdaten nach Durchsatz
+    data.histogramData.sort(function (a, b) {
+        return a.throughput - b.throughput;
+    });
+
+    // Füge das Perzentil zur Rückgabe hinzu
+    data.percentileStories = percentileStories;
+
+    // Debugging: Optionale Protokollierung
+    //gs.info("Simulation Results (first 10): " + JSON.stringify(simulationResults.slice(0, 10)));
+    //gs.info("Histogram Data: " + JSON.stringify(data.histogramData));
+    //gs.info("85% Confidence: " + percentileStories + " stories can be completed.");
 })();
 ]]></script>
         <servicenow>false</servicenow>
@@ -271,14 +242,14 @@
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2025-01-07 09:40:56</sys_created_on>
         <sys_id>b1f0154083c312102ea1c596feaad36f</sys_id>
-        <sys_mod_count>65</sys_mod_count>
+        <sys_mod_count>72</sys_mod_count>
         <sys_name>Monte Carlo Simulation</sys_name>
         <sys_package display_value="Monte Carlo Simulation" source="x_336554_monte_car">e686fa884760021016ba309bd36d4312</sys_package>
         <sys_policy/>
         <sys_scope display_value="Monte Carlo Simulation">e686fa884760021016ba309bd36d4312</sys_scope>
         <sys_update_name>sp_widget_b1f0154083c312102ea1c596feaad36f</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2025-01-08 11:28:10</sys_updated_on>
+        <sys_updated_on>2025-01-09 14:18:30</sys_updated_on>
         <template><![CDATA[<h1>
   Monte Carlo Simulation: Histogram
 </h1>
